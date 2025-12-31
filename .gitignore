@@ -1,5 +1,9 @@
 result/**
 result
-scripts/settings.xml
-scripts/netrc
-scripts/s3cfg
+BACKUP/
+.claude/settings.local.json
+work-repo-template/
+setup.sh
+flake.darwin.nix
+lix-installer
+nix-installer-determinate

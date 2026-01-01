@@ -80,6 +80,8 @@ A highly modular, well-documented Nix home-manager configuration with profile sy
 ├── overlays/                      # Custom package modifications
 │   └── default.nix               # VS Code extensions, macOS utils
 └── scripts/                       # Utility scripts
+    ├── default.nix               # Script imports
+    └── gen-ssh-key.nix          # SSH key generator
 ```
 
 ## 💻 Usage
@@ -145,9 +147,11 @@ Create a private flake that imports this one:
           company-tools.packages.aarch64-darwin.your-tool
         ];
 
-        # Company-specific modules
+        # Company-specific modules (from your work repo, not base-config)
+        # Example: ~/work/repos/your-work-config/scripts/
         extraModules = [
-          (import ./scripts/maven-settings.nix)  # Internal repos
+          (import ./scripts/maven-settings.nix)  # Maven internal repos
+          (import ./scripts/s3cfg.nix)           # S3 credentials
           (import ./scripts/vpn-config.nix)      # Company VPN
         ];
 
@@ -284,6 +288,45 @@ base-config.lib.mkHomeConfig {
 ```
 
 The JDK manager automatically uses custom JDKs when `profile.jdk.source = "company"`.
+
+### Work-Specific Scripts
+
+The public repo does NOT include work/company-specific scripts. Implement these in your private work repo:
+
+**Common Examples:**
+- **Maven Settings:** Configure internal artifact repositories
+- **S3 Config:** Cloud storage credentials
+- **VPN Config:** Company VPN settings
+- **Certificates:** Internal CA certificates
+
+**Implementation Pattern:**
+
+1. Create module in your work repo:
+   ```nix
+   # work-repo/scripts/maven-settings.nix
+   {pkgs, ...}: {
+     home.file.".m2/settings.xml".source = ./settings.xml;
+   }
+   ```
+
+2. Import via extraModules:
+   ```nix
+   base-config.lib.mkHomeConfig {
+     # ...
+     extraModules = [
+       (import ./scripts/maven-settings.nix)
+     ];
+   }
+   ```
+
+3. Encrypt sensitive files with git-crypt:
+   ```bash
+   # In work repo's .gitattributes
+   scripts/settings.xml filter=git-crypt diff=git-crypt
+   scripts/s3cfg* filter=git-crypt diff=git-crypt
+   ```
+
+See `CLAUDE.md` "Work-Specific Scripts Pattern" section for detailed examples.
 
 ## 📚 For Nix Beginners
 

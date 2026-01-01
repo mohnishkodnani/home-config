@@ -29,15 +29,15 @@
 
     # Find company JDK attribute by looking for one that contains the version
     # Example: if version="17", matches "company-jdk17", "custom-jdk17", "jdk17", etc.
-    findCompanyJdk = version:
-      let
-        matchingAttrs = lib.filterAttrs
-          (name: _: lib.hasSuffix version name)
-          companyJdks;
-      in
-        if lib.length (lib.attrNames matchingAttrs) == 0
-        then throw "No company JDK found for version ${version} in provided companyJdks"
-        else lib.head (lib.attrValues matchingAttrs);
+    findCompanyJdk = version: let
+      matchingAttrs =
+        lib.filterAttrs
+        (name: _: lib.hasSuffix version name)
+        companyJdks;
+    in
+      if lib.length (lib.attrNames matchingAttrs) == 0
+      then throw "No company JDK found for version ${version} in provided companyJdks"
+      else lib.head (lib.attrValues matchingAttrs);
   in
     if profile.jdk.source == "company"
     then

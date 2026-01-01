@@ -94,10 +94,8 @@ alejandra path/to/file.nix
 │   └── default.nix               # VS Code extensions, macOS utilities
 │
 ├── scripts/                       # Utility scripts
-│   ├── default.nix               # Custom scripts
-│   ├── gen-ssh-key.nix          # SSH key generator
-│   ├── maven-settings.nix       # (KEPT for private repos to extend)
-│   └── s3cfg.nix                # (KEPT for private repos to extend)
+│   ├── default.nix               # Script imports
+│   └── gen-ssh-key.nix          # SSH key generator
 │
 └── work-repo-template/           # Example private repo structure
     ├── README.md                 # Work-specific instructions
@@ -191,6 +189,111 @@ inputs.base-config.lib.mkHomeConfig {
 {
   programs.git.userEmail = profile.user.email;
 }
+```
+
+## Work-Specific Scripts Pattern
+
+**Purpose:** The public repo does NOT contain work/company-specific scripts. Private repos should implement these in their own `scripts/` directory.
+
+### Common Work Script Patterns
+
+#### Maven Settings (Internal Repositories)
+
+**Location (in your work repo):** `scripts/maven-settings.nix`
+
+**Purpose:** Configure Maven to use company artifact repositories
+
+**Example Implementation:**
+```nix
+{pkgs, ...}: {
+  # Symlink your company's Maven settings to ~/.m2/settings.xml
+  home.file.".m2/settings.xml".source = ./settings.xml;
+}
+```
+
+**Required Files (in work repo):**
+- `scripts/maven-settings.nix` - The module
+- `scripts/settings.xml` - Your company's Maven configuration (git-crypt encrypted)
+
+**Usage in work flake.nix:**
+```nix
+extraModules = [
+  (import ./scripts/maven-settings.nix)
+];
+```
+
+#### S3 Configuration (Cloud Storage)
+
+**Location (in your work repo):** `scripts/s3cfg.nix`
+
+**Purpose:** Configure s3cmd/rclone with company S3 credentials
+
+**Example Implementation:**
+```nix
+{pkgs, ...}: {
+  # Symlink S3 configurations to home directory
+  home.file.".s3cfg".source = ./s3cfg;
+  # Add environment-specific configs if needed
+  home.file.".s3cfg_production".source = ./s3cfg_production;
+  home.file.".s3cfg_staging".source = ./s3cfg_staging;
+}
+```
+
+**Required Files (in work repo):**
+- `scripts/s3cfg.nix` - The module
+- `scripts/s3cfg` - S3 credentials (git-crypt encrypted)
+- `scripts/s3cfg_*` - Environment-specific configs (git-crypt encrypted)
+
+**Usage in work flake.nix:**
+```nix
+extraModules = [
+  (import ./scripts/s3cfg.nix)
+];
+```
+
+#### Other Common Work Scripts
+
+- **VPN Configuration:** `scripts/vpn-config.nix`
+- **Internal Certificates:** `scripts/company-certs.nix`
+- **SSH Config:** `scripts/ssh-work-hosts.nix`
+- **IDE Settings:** `scripts/intellij-work-settings.nix`
+
+### Security Best Practices
+
+1. **Use git-crypt for sensitive files**
+   ```bash
+   # In your work repo
+   git-crypt init
+   # Add to .gitattributes:
+   scripts/settings.xml filter=git-crypt diff=git-crypt
+   scripts/s3cfg* filter=git-crypt diff=git-crypt
+   ```
+
+2. **Never commit credentials to public repos**
+
+3. **Document unlock requirements in work repo README**
+   ```markdown
+   ## Setup
+   1. Clone repo
+   2. Run: git-crypt unlock
+   3. Activate: home-manager switch --flake .#work-macbook
+   ```
+
+### Example Work Repo Structure
+
+See the pattern used by actual work configurations:
+```
+work-repo/
+├── flake.nix                    # Imports base-config as library
+├── profiles/work.nix            # Work profile with company settings
+├── scripts/
+│   ├── maven-settings.nix       # Maven module
+│   ├── settings.xml             # Maven config (encrypted)
+│   ├── s3cfg.nix                # S3 module
+│   ├── s3cfg                    # S3 credentials (encrypted)
+│   ├── s3cfg_production         # Prod S3 (encrypted)
+│   └── s3cfg_staging            # Staging S3 (encrypted)
+└── .gitattributes               # git-crypt configuration
 ```
 
 ## Testing & Validation

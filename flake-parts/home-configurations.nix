@@ -126,9 +126,10 @@
     #       inputs.company-tool.packages.aarch64-darwin.default
     #     ];
     #
-    #     # Optional: add company-specific modules
+    #     # Optional: add company-specific modules (from work repo)
     #     extraModules = [
-    #       (import ./scripts/maven-settings.nix)
+    #       (import ./scripts/maven-settings.nix)  # Maven internal repos
+    #       (import ./scripts/s3cfg.nix)           # S3 credentials
     #     ];
     #   };
     # ```
@@ -439,8 +440,10 @@
       # SSH: Configures ~/.ssh/config with host shortcuts
       ssh = import ../modules/programs/ssh.nix;
 
-      # Company-specific modules (maven-settings, s3cfg) should be added
-      # via extraModules in work repo
+      # Company-specific modules should be added via extraModules parameter.
+      # Common examples: maven-settings.nix (internal repos), s3cfg.nix (S3 creds),
+      # vpn-config.nix (company VPN). These live in your work repo, not here.
+      # See CLAUDE.md "Work-Specific Scripts Pattern" section for examples.
     };
   };
 }

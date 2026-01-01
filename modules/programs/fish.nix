@@ -17,7 +17,7 @@ in {
             ${pkgs.nix-your-shell}/bin/nix-your-shell fish | source
             ${pkgs.starship}/bin/starship init fish | source
             ${pkgs.jump}/bin/jump shell fish | source
-            ${pkgs.neofetch}/bin/neofetch
+            ${pkgs.fastfetch}/bin/fastfetch
             eval (${pkgs.direnv}/bin/direnv hook fish)
     '';
     plugins = with pkgs.fishPlugins; [

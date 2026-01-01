@@ -84,7 +84,7 @@
     # Terminal & Shell Tools
     # ------------------------------------------------------------------------
     tmux # Terminal multiplexer (multiple panes/windows)
-    neofetch # Display system info (for showing off your setup)
+    fastfetch # Display system info (much faster than neofetch)
     nushell # Modern shell with structured data
 
     # ------------------------------------------------------------------------

@@ -139,7 +139,8 @@
       perSystem = {system, ...}: {
         # Configure the 'pkgs' variable available to all modules
         _module.args.pkgs = import inputs.nixpkgs {
-          inherit system; # Pass the current system (aarch64-darwin or x86_64-linux)
+          # Use stdenv.hostPlatform.system instead of system to avoid warnings
+          localSystem = system;
 
           # nixpkgs configuration options
           config = {
@@ -185,6 +186,7 @@
         ./flake-parts/home-configurations.nix # Machine configs
         ./flake-parts/devshells.nix # Development shells
         ./flake-parts/overlays.nix # Package overlays
+        ./flake-parts/scripts.nix # Flake packages (scripts)
       ];
     };
 }

@@ -6,6 +6,9 @@
   # Primary development languages (JVM/Scala, Nix) have their own modules.
 
   home.packages = with pkgs; [
+    # Node.js - JavaScript runtime
+    nodejs_24
+
     # Go - Systems programming language
     go # Go compiler and toolchain (includes gopls LSP server)
 

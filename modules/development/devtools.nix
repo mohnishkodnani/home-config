@@ -7,5 +7,8 @@
   home.packages = with pkgs; [
     # Debugging
     lldb # LLVM debugger - works with Rust, C, C++, and other LLVM-based languages
+
+    # IDEs
+    # jetbrains.idea # IntelliJ IDEA (best IDE for JVM languages)
   ];
 }

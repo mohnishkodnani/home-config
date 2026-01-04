@@ -22,8 +22,8 @@
     "bbenoist.nix"
 
     # GitHub extensions
-    "github.copilot"
-    "github.copilot-chat"
+    # "github.copilot"
+    # "github.copilot-chat" # Handled manually below due to hash mismatch
     "github.github-vscode-theme"
 
     # C/C++ and development tools
@@ -51,13 +51,26 @@
     "formulahendry.code-runner"
   ];
 
+  # Manually fetch Copilot Chat due to hash mismatch in nix4vscode
+  # copilot-chat = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+  # name = "copilot-chat";
+  # publisher = "github";
+  # version = "0.35.2";
+  # sha256 = "sha256-uUSfG/TY/meE4IcptDH7iy2bvM/38WL7u0Y2y+NrE4Y=";
+  # };
+
   # Extensions from OpenVSX registry (for problematic extensions)
   openvsx-extensions = pkgs.nix4vscode.forOpenVsx [
     "jnoortheen.nix-ide"
   ];
 
   # Combine all extensions
-  custom-extensions = vscode-extensions ++ openvsx-extensions;
+  custom-extensions =
+    vscode-extensions
+    ++ openvsx-extensions
+    ++ [
+      # copilot-chat
+    ];
   code =
     if pkgs.stdenv.isLinux
     then pkgs.vscodium

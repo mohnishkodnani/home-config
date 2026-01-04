@@ -14,6 +14,7 @@
     coursier # Dependency resolver for Scala/Java
     scala-cli # Modern Scala scripting and REPL
     metals # Scala Language Server for IDE integration
+    bloop # Build server for Scala
 
     # Build Tools
     maven # Java build tool (XML-based)

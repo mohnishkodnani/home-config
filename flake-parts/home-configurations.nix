@@ -431,6 +431,12 @@
       # Fonts: Installs Nerd Fonts for terminal icons
       fonts = import ../modules/programs/fonts.nix;
 
+      # GUI Apps: Brave, Spotify, etc.
+      gui-apps = import ../modules/programs/gui-apps.nix;
+
+      # Linux Specifics: Bluetooth, Gestures, etc.
+      linux = import ../modules/linux/default.nix;
+
       # VS Code: Installs extensions and configures settings
       vscodium = import ../modules/programs/vscode/default.nix;
 

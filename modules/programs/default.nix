@@ -90,7 +90,7 @@
     rustc
     # IDE
     helix # post modal editor `hx`
-    jetbrains.idea # Best JVM IDE. Not yet supported on aarch
+    # jetbrains.idea - Moved to devtools.nix
     # Debugging tools like lldb for rust and cpp
     lldb
     # rust based site generator
@@ -117,7 +117,7 @@
     dialog
     ollama
 
-    # nodejs_24  # Commented out due to download issues
+    # nodejs_24  # Moved to other-languages.nix
     # claude-code  # May depend on nodejs
     vcpkg
     cmake-format

@@ -8,8 +8,6 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
-    userName = profile.user.name;
-    userEmail = profile.user.email;
     ignores = [
       "*.bloop"
       "*.bsp"
@@ -26,7 +24,11 @@
       "*.iml"
       ".DS_Store"
     ];
-    extraConfig = {
+    settings = {
+      user = {
+        name = profile.user.name;
+        email = profile.user.email;
+      };
       init.defaultBranch = "main";
       http.sslVerify = false;
       core = {

@@ -101,9 +101,6 @@
     shellcheck # Bash script linter (catches common mistakes)
     pre-commit # Git pre-commit hook manager
     pkg-config-unwrapped # Build configuration helper
-    cmake # Cross-platform build system
-    ninja # Fast build system (used with cmake)
-    doxygen # Documentation generator
 
     # ------------------------------------------------------------------------
     # Git Tools
@@ -140,7 +137,7 @@
     # IDEs & Editors
     # ------------------------------------------------------------------------
     helix # Modern modal editor (like Vim but simpler)
-    jetbrains.idea # IntelliJ IDEA (best IDE for JVM languages)
+    # jetbrains.idea # IntelliJ IDEA - Moved to devtools
     obsidian # Markdown note-taking app (knowledge management)
 
     # ------------------------------------------------------------------------
@@ -170,7 +167,7 @@
     # ------------------------------------------------------------------------
     # Language Runtimes
     # ------------------------------------------------------------------------
-    nodejs_24 # Node.js JavaScript runtime
+    # nodejs_24 # Moved to appropriate module
 
     # ------------------------------------------------------------------------
     # Commented Out Packages

@@ -374,8 +374,11 @@ nix develop .#jdk17
 # Update all inputs (nixpkgs, etc.)
 nix flake update
 
-# See what's in the flake
-nix flake show
+# See what configurations are available (custom script)
+hm-list
+
+# See what configurations are available (nix core command)
+nix eval .#homeConfigurations --apply 'builtins.attrNames'
 
 # Format Nix code
 alejandra .
